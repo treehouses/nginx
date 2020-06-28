@@ -1,0 +1,39 @@
+sudo: required
+addons:
+  apt:
+    update: true
+    packages:
+    - docker-ce
+services:
+- docker
+script:
+- export DOCKER_CLI_EXPERIMENTAL=enabled
+- source sha_function.sh
+#- flag=$(is_base "vmnet8/alpine:latest" "vmnet8/nginx-tags:alpine-x86")
+- flag_alpine=$(is_base "treehouses/alpine:latest" "treehouses/nginx:1.16")
+- echo $flag_alpine
+- version1=$(image_version nginx:latest)
+- echo "offical version is $version1"
+- version2=$(image_version treehouses/nginx:1.16)
+- echo "my version is $version2"
+#- flag=$(is_base "vmnet8/alpine:latest" "vmnet8/nginx-tags:alpine-x86")
+#- flag=$(compare "vmnet8/alpine:latest" "vmnet8/nginx-tags:alpine-x86" "nginx:latest" "vmnet8/nginx-tags:alpine-x86")
+- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:1.16" "nginx:latest" "treehouses/nginx:1.16")
+- echo $flag
+- timetag=$(date +%Y%m%d%H%M)
+- echo $timetag
+  #- echo "$DOCKERPASS" | docker login -u vmnet8 --password-stdin
+before_deploy:
+- "./docker-build.sh treehouses/nginx-tags:$timetag"
+- version3=$(image_version treehouses/nginx-tags:$timetag)
+- echo $version3
+deploy:
+- provider: script
+  script: docker push treehouses/nginx-tags:$timetag
+  skip_cleanup: true
+  on:
+    all_branches: true
+    condition: $flag = true
+env:
+  global:
+    secure: dkfp69KWQ+HTWau1m3+0ArxpK+luZ/r29JxaO8vPCgI1S6Axd8R77HfDhCRh9skb1X3GmRJK0fENKRI/pqQ9Kd97qvFxki7H2ECNWbOSqXc8EaNEObzOsEvtlTbqrTCbI+U5j3VG3fi2t2p31iFghpykOqQHzDyS3PsmgpvYTbZKHxf+fbkbKpUw7jjVr9N99Uls60VRdmUiUU9KPmw9ppcJEsIw1bCP4vtBaBjkyFFcZvR4yXp/xs+3wDdRYGuGJ3LR6BHh5K/tLwBAKvPU5MHz/Sppg4y2kuc/70CwWd/VxdLQvPMhKmA5040pVWV6jcX1JkDzUvN4hWPNJm0n1w8KBJoYAvHjZ53wzHZK8dUlYUsc9IPrQywWYdaDH3Kop7oxlU1UhZXhG3PSQ+kdI/XUiZmCa5BTDKow6LuaEJ85QUKSECSuapXlNYswMX0OV1iefsm24wbkHZEmxPtFIsq/vgylNMygqyVCvRIW8vbiXCvZYENeWYFQZJfWRiMx1DlLw6+NeJYJdXYjFRHgoSPG79GrGdjxxAuhQe7Bu+luuZeayxle3ddwszs1bkEvPsQZBcsqsEk8bZXi3hV4vfktG1aN+yAo7GX24XOeQM/61HRR3JRv/jloAx98WSwE5vpV2BO/yG9BPVwZg0ei+TdzjrYdV8VYHMFC1Pbf+7g=
