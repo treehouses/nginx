@@ -9,14 +9,14 @@ services:
 script:
 - export DOCKER_CLI_EXPERIMENTAL=enabled
 - source sha_function.sh
-- flag_alpine=$(is_base "treehouses/alpine:latest" "treehouses/nginx:1.16")
+- flag_alpine=$(is_base "treehouses/alpine:latest" "treehouses/nginx:1.18")
 - echo $flag_alpine
 - version1=$(image_version nginx:latest)
 - echo "offical version is $version1"
-- version2=$(image_version treehouses/nginx:1.16)
+- version2=$(image_version treehouses/nginx:1.18)
 - echo "my version is $version2"
-- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:1.16" "nginx:latest"
-  "treehouses/nginx:1.16")
+- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:1.18" "nginx:latest"
+  "treehouses/nginx:1.18")
 - echo $DOCKERAPIKEY | docker login -u "sevenseas" --password-stdin
 - echo $flag
 - timetag=$(date +%Y%m%d%H%M)
