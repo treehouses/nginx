@@ -14,20 +14,27 @@ script:
 - version1=$(image_version nginx:latest)
 - echo "offical version is $version1"
 - version2=$(image_version treehouses/nginx:1.18)
-- echo "my version is $version2"
+- echo "treehouses version is $version2"
 - flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:1.18" "nginx:latest"
   "treehouses/nginx:1.18")
-- echo $DOCKERAPIKEY | docker login -u "sevenseas" --password-stdin
 - echo $flag
+- echo $DOCKERAPIKEY | docker login -u "sevenseas" --password-stdin
+before_deploy:
+- docker run --rm --privileged multiarch/qemu-user-static --reset -p yes   # for arm64
+- "./docker-build.sh treehouses/alpine:latest arm"    #Dockerfile base image is arm arch
+- "./docker-build.sh treehouses/alpine:latest arm64"    #Dockerfile base image is arm64 arch
+- "./docker-build.sh treehouses/alpine:latest amd64"    #Dockerfile base image is amd64 arch
 - timetag=$(date +%Y%m%d%H%M)
 - echo $timetag
-before_deploy:
-- "./docker-build.sh treehouses/nginx-tags:$timetag"
-- version3=$(image_version treehouses/nginx-tags:$timetag)
-- echo $version3
+- tag1="latest"
+- tag2=$timetag
+- echo $tag2
+- create_manifest treehouses/nginx $tag1 $tag2 treehouses/nginx-tags:amd64 treehouses/nginx-tags:arm treehouses/nginx-tags:arm64
+- docker manifest inspect treehouses/nginx:$tag1
+- docker manifest inspect treehouses/nginx:$tag2
 deploy:
 - provider: script
-  script: docker push treehouses/nginx-tags:$timetag
+  script: docker manifest push treehouses/nginx:tag1, docker manifest push treehouses/nginx:$tag2
   skip_cleanup: true
   on:
     all_branches: true
