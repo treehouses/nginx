@@ -34,7 +34,7 @@ before_deploy:
 - docker manifest inspect treehouses/nginx:$tag2
 deploy:
 - provider: script
-  script: docker manifest push treehouses/nginx:tag1, docker manifest push treehouses/nginx:$tag2
+  script: docker manifest push treehouses/nginx:tag1; docker manifest push treehouses/nginx:$tag2
   skip_cleanup: true
   on:
     all_branches: true
