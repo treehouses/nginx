@@ -10,7 +10,7 @@ LABEL org.opencontainers.image.maintainer="vmnet8 <vmnet8@ole.org>" \
       org.opencontainers.image.source="https://github.com/treehouses/nginx"
 
 #RUN apk --no-cache add nginx \
-RUN apk --no-cache  && apk update && apk  add nginx \
+RUN apk --no-cache update && apk  add nginx \
     && mkdir -p /run/nginx \
     && sed -i "s/ssl_session_cache shared:SSL:2m;/#ssl_session_cache shared:SSL:2m;/g" /etc/nginx/nginx.conf
 
