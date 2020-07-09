@@ -33,7 +33,7 @@ script:
 - create_manifest treehouses/nginx $tag1 $tag2 treehouses/nginx-tags:amd64 treehouses/nginx-tags:arm treehouses/nginx-tags:arm64
 - docker manifest inspect treehouses/nginx:$tag1
 - docker manifest inspect treehouses/nginx:$tag2
-- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:1.18" "treehouses/nginx:latest" "treehouses/nginx:$tag2")
+- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:1.18" "treehouses/nginx:latest" "treehouses/nginx-tags:$arm")
 - echo $flag
 deploy:
 - provider: script
