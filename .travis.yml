@@ -9,22 +9,18 @@ services:
 script:
 - export DOCKER_CLI_EXPERIMENTAL=enabled
 - source sha_function.sh
-#- flag_alpine=$(is_base "treehouses/alpine:latest" "treehouses/nginx:1.18")
 - flag_alpine=$(is_base "treehouses/alpine:latest" "treehouses/nginx:latest")
 - echo $flag_alpine
-- version1=$(image_version nginx:latest)
-- echo "offical version is $version1"
 - version2=$(image_version treehouses/nginx:latest)
 - echo "treehouses version is $version2"
-#- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:1.18" "nginx:latest"
- # "treehouses/nginx:1.18")
-#- echo $flag
 - echo $DOCKERAPIKEY | docker login -u "sevenseas" --password-stdin
-#before_deploy:
 - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes   # for arm64
 - "./docker-build.sh treehouses/alpine:latest arm"    #Dockerfile base image is arm arch
 - "./docker-build.sh treehouses/alpine:latest arm64"    #Dockerfile base image is arm64 arch
 - "./docker-build.sh treehouses/alpine:latest amd64"    #Dockerfile base image is amd64 arch
+- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:latest" "treehouses/nginx:latest" "treehouses/nginx-tags:amd64")
+- echo $flag
+before_deploy:
 - timetag=$(date +%Y%m%d%H%M)
 - echo $timetag
 - tag1="latest"
@@ -33,8 +29,6 @@ script:
 - create_manifest treehouses/nginx $tag1 $tag2 treehouses/nginx-tags:amd64 treehouses/nginx-tags:arm treehouses/nginx-tags:arm64
 - docker manifest inspect treehouses/nginx:$tag1
 - docker manifest inspect treehouses/nginx:$tag2
-- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:latest" "treehouses/nginx:latest" "treehouses/nginx-tags:arm")
-- echo $flag
 deploy:
 - provider: script
   script: docker manifest push treehouses/nginx:$tag1; docker manifest push treehouses/nginx:$tag2
