@@ -9,7 +9,8 @@ services:
 script:
 - export DOCKER_CLI_EXPERIMENTAL=enabled
 - source sha_function.sh
-- flag_alpine=$(is_base "treehouses/alpine:latest" "treehouses/nginx:1.18")
+#- flag_alpine=$(is_base "treehouses/alpine:latest" "treehouses/nginx:1.18")
+- flag_alpine=$(is_base "treehouses/alpine:latest" "treehouses/nginx:latest")
 - echo $flag_alpine
 - version1=$(image_version nginx:latest)
 - echo "offical version is $version1"
@@ -32,7 +33,7 @@ script:
 - create_manifest treehouses/nginx $tag1 $tag2 treehouses/nginx-tags:amd64 treehouses/nginx-tags:arm treehouses/nginx-tags:arm64
 - docker manifest inspect treehouses/nginx:$tag1
 - docker manifest inspect treehouses/nginx:$tag2
-- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:1.18" "treehouses/nginx:1.18" "treehouses/nginx:$tag1")
+- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:1.18" "treehouses/nginx:latest" "treehouses/nginx:$tag2")
 - echo $flag
 deploy:
 - provider: script
