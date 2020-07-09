@@ -19,7 +19,7 @@ script:
  # "treehouses/nginx:1.18")
 #- echo $flag
 - echo $DOCKERAPIKEY | docker login -u "sevenseas" --password-stdin
-before_deploy:
+#before_deploy:
 - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes   # for arm64
 - "./docker-build.sh treehouses/alpine:latest arm"    #Dockerfile base image is arm arch
 - "./docker-build.sh treehouses/alpine:latest arm64"    #Dockerfile base image is arm64 arch
