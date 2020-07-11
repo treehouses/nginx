@@ -1,0 +1,41 @@
+sudo: required
+addons:
+  apt:
+    update: true
+    packages:
+    - docker-ce
+services:
+- docker
+script:
+- export DOCKER_CLI_EXPERIMENTAL=enabled
+- source sha_function.sh
+- flag_alpine=$(is_base "treehouses/alpine:latest" "treehouses/nginx:latest")
+- echo $flag_alpine
+- version2=$(image_version treehouses/nginx:latest)
+- echo "treehouses version is $version2"
+- echo $DOCKERAPIKEY | docker login -u "sevenseas" --password-stdin
+- docker run --rm --privileged multiarch/qemu-user-static --reset -p yes   # for arm64
+- "./docker-build.sh treehouses/alpine:latest arm"    #Dockerfile base image is arm arch
+- "./docker-build.sh treehouses/alpine:latest arm64"    #Dockerfile base image is arm64 arch
+- "./docker-build.sh treehouses/alpine:latest amd64"    #Dockerfile base image is amd64 arch
+- flag=$(compare "treehouses/alpine:latest" "treehouses/nginx:latest" "treehouses/nginx:latest" "treehouses/nginx-tags:amd64")
+- echo $flag
+before_deploy:
+- timetag=$(date +%Y%m%d%H%M)
+- echo $timetag
+- tag1="latest"
+- tag2=$timetag
+- echo $tag2
+- create_manifest treehouses/nginx $tag1 $tag2 treehouses/nginx-tags:amd64 treehouses/nginx-tags:arm treehouses/nginx-tags:arm64
+- docker manifest inspect treehouses/nginx:$tag1
+- docker manifest inspect treehouses/nginx:$tag2
+deploy:
+- provider: script
+  script: docker manifest push treehouses/nginx:$tag1; docker manifest push treehouses/nginx:$tag2
+  skip_cleanup: true
+  on:
+    all_branches: true
+    condition: "$flag = true"
+env:
+  global:
+  - secure: QDGtZWpbrrzktGhEXKf99VawpDFsdDbj/O+fmqFGAoQX64aMAUTfr30Z/HQIwS4VlTFY+QuqaC12mD5hPo078xSMfKHNx7PAsZKdfZXy5KRlXiZ3pP6ma99YC6GTIGU7ZgWEjsH5GBQk339ZsjgIC8df7MY17T2iP/BIeiWw0/joBd38OSBV2hrqqQLvordiwTDHaQ4fJ+nyobR1njo4pkOQU+cLRKgjBdChg/92fqgXUbt4orTUyQNR5BRt/vZyoBhNwCxDqVYvSIyT+0kgIjNOksTOplVM2cxbktUvM5+skjI9ZxVb1zFsGlqyCzFcTQfxRg1LVT/zWpl6a6Kf4DqqHhmZEgZnj4coVGwfr7IgZMQ2a79JyiK0I3YjrFulcFbln2UQ5gVCrAVSJOpOOo5P2xyp7ZfJ/6J95YM4Eyv3FCT3u+Gx7lyzQ8QmjnCkchn7G4zK5nZMd+KzcnBD6Ntfewoy6FXw7iZ/lFx16MlKblYjgfFAaHwapwFa3OUxo1HM70VFQLS8xvLrlnpJuPbwFQ4Wrlm18h8QQZesPy1pkZL3opPvC51HYKBkQvAUX/1GAaGt0EULhzFSad22aYSOV96FYcrb1dgAlvtMizgwZchH3txWZZiw5MvjTVaCYv6CI3b0Jy6AMYEbmQAEIC9mUCZiHMkhMEgV6Mk2zyA=
