@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -x
+set -x
 get_sha(){
     repo=$1
     docker pull $1 &>/dev/null
@@ -66,4 +66,4 @@ create_manifest (){
     docker manifest annotate $repo:$tag2 $arm64 --arch arm64
 
 }
-
+get_sha $@
