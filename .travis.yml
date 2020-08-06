@@ -11,6 +11,7 @@ script:
 - source sha_function.sh
 #- flag_alpine=$(is_base "treehouses/alpine:latest" "treehouses/nginx:latest")
 - flag_alpine=$(is_base "treehouses/alpine:latest" "arm" "treehouses/nginx:latest" "arm")
+- flag_alpine=$(is_base "treehouses/alpine:latest" "amd64" "treehouses/nginx:latest" "amd64")
 - echo $flag_alpine
 - version2=$(image_version treehouses/nginx:latest)
 - echo "treehouses version is $version2"
