@@ -121,4 +121,4 @@ create_manifest (){
 
 }
 #get_manifest_sha $@
-is_base $@
+#is_base $@
