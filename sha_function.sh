@@ -64,7 +64,7 @@ is_base (){
     local image_sha   # nginx
     base_repo=$1
     #base_arch=$2
-    image_repo=$3
+    image_repo=$2
     #image_arch=$4
     base_sha=$(get_sha $1)
     image_sha=$(get_sha $2)
