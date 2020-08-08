@@ -92,10 +92,11 @@ image_version(){
 }
 
 compare (){
-    result=$(is_base $1 $2)
-    version1=$(image_version $3)
-    version2=$(image_version $4)
-    if [ $result == "true" ] || [ "$version1" != "$version2" ];
+    result1=$(is_base $1 $2)
+    result2=$(is_base $3 $4)
+    version1=$(image_version $5)
+    version2=$(image_version $6)
+    if [ $result1 == "true" ] || [ $result2 == "true" ] || [ "$version1" != "$version2" ];
     then
         echo "true"
     else
