@@ -13,7 +13,7 @@ script:
 - echo $alpine_arm_sha
 - nginx_arm_sha=$(get_manifest_sha "treehouses/nginx:latest" "arm")
 - echo $nginx_arm_sha
-- flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "treehouses/nginx@"$nginx_arm_sha)
+- flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "arm" "treehouses/nginx@"$nginx_arm_sha "arm")
 #- flag_alpine=$(is_base "treehouses/alpine:latest" "arm" "treehouses/nginx:latest" "arm")
 #- flag_alpine=$(is_base "treehouses/alpine:latest" "amd64" "treehouses/nginx:latest" "amd64")
 - echo $flag_arm
