@@ -21,6 +21,12 @@ script:
 - echo $nginx_amd64_sha
 - flag_amd64=$(is_base "treehouses/alpine@"$alpine_amd64_sha "treehouses/nginx@"$nginx_amd64_sha )
 - echo $flag_amd64
+- alpine_arm64_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm64")
+- echo $alpine_arm64_sha
+- nginx_arm64_sha=$(get_manifest_sha "treehouses/nginx:latest" "arm64")
+- echo $nginx_arm64_sha
+- flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "treehouses/nginx@"$nginx_arm64_sha )
+- echo $flag_arm64
 - version2=$(image_version treehouses/nginx:latest)
 - echo "treehouses version is $version2"
 - echo $DOCKERAPIKEY | docker login -u "sevenseas" --password-stdin
@@ -28,7 +34,7 @@ script:
 - "./docker-build.sh treehouses/alpine:latest arm"    #Dockerfile base image is arm arch
 - "./docker-build.sh treehouses/alpine:latest arm64"    #Dockerfile base image is arm64 arch
 - "./docker-build.sh treehouses/alpine:latest amd64"    #Dockerfile base image is amd64 arch
-- flag=$(compare "treehouses/alpine@"$alpine_arm_sha "treehouses/nginx@"$nginx_arm_sha "treehouses/alpine@"$alpine_amd64_sha "treehouses/nginx@"$nginx_amd64_sha  "treehouses/nginx:latest" "treehouses/nginx-tags:amd64")
+- flag=$(compare "treehouses/alpine@"$alpine_arm_sha "treehouses/nginx@"$nginx_arm_sha "treehouses/alpine@"$alpine_amd64_sha "treehouses/nginx@"$nginx_amd64_sha "treehouses/alpine@"$alpine_arm64_sha "treehouses/nginx@"$nginx_arm64_sha "treehouses/nginx:latest" "treehouses/nginx-tags:amd64")
 - echo $flag
 before_deploy:
 - timetag=$(date +%Y%m%d%H%M)
