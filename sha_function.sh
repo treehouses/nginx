@@ -63,13 +63,13 @@ is_base (){
     local base_sha    # alpine
     local image_sha   # nginx
     base_repo=$1
-    base_arch=$2
+    #base_arch=$2
     image_repo=$3
-    image_arch=$4
-   # base_sha=$(get_sha $1)
-   # image_sha=$(get_sha $2)
-    base_sha=$(get_manifest_sha $1 $2)
-    image_sha=$(get_manifest_sha $3 $4)
+    #image_arch=$4
+    base_sha=$(get_sha $1)
+    image_sha=$(get_sha $2)
+    #base_sha=$(get_manifest_sha $1 $2)
+    #image_sha=$(get_manifest_sha $3 $4)
 
     found="true"
     for i in $base_sha; do
@@ -122,4 +122,5 @@ create_manifest (){
 
 }
 #get_manifest_sha $@
-#is_base $@
+#is_boase $@
+#get_sha $@
