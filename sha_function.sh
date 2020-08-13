@@ -1,14 +1,30 @@
 #!/bin/bash
-#set -x
+get_manifest_sha (){
+    local repo=$1
+    local arch=$2
+    docker pull -q $1 &>/dev/null
+    docker manifest inspect $1 > "$2".txt
+    sha=""
+    i=0
+    while [ "$sha" == "" ] && read -r line
+    do
+        archecture=$(jq .manifests[$i].platform.architecture "$2".txt |sed -e 's/^"//' -e 's/"$//')
+        if [ "$archecture" = "$2" ];then
+            sha=$(jq .manifests[$i].digest "$2".txt  |sed -e 's/^"//' -e 's/"$//')
+            echo ${sha}
+        fi
+        i=$i+1
+    done < "$2".txt
+}
+
 get_sha(){
     repo=$1
     docker pull $1 &>/dev/null
     #sha=$(docker image inspect $1 |jq .[0].RootFS.Layers |grep sha)
     sha=$(docker image inspect $1 | jq --raw-output '.[0].RootFS.Layers|.[]')   # [0] means first element of list,[]means all the elments of lists
     echo $sha
-    #read -a base_sha <<< $base_sha
-    #sha_arr=($sha)
 }
+
 is_base (){
     local base_sha    # alpine
     local image_sha   # nginx
@@ -38,10 +54,12 @@ image_version(){
 }
 
 compare (){
-    result=$(is_base $1 $2)
-    version1=$(image_version $3)
-    version2=$(image_version $4)
-    if [ $result == "true" ] || [ "$version1" != "$version2" ];
+    result1=$(is_base $1 $2)
+    result2=$(is_base $3 $4)
+    result3=$(is_base $5 $6)
+    version1=$(image_version $7)
+    version2=$(image_version $8)
+    if [ $result1 == "true" ] || [ $result2 == "true" ] || [ $result3 == "true" ] || [ "$version1" != "$version2" ];
     then
         echo "true"
     else
@@ -64,6 +82,4 @@ create_manifest (){
     docker manifest annotate $repo:$tag2 $x86 --arch amd64
     docker manifest annotate $repo:$tag2 $rpi --arch arm
     docker manifest annotate $repo:$tag2 $arm64 --arch arm64
-
 }
-
