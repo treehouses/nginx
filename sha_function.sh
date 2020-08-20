@@ -27,23 +27,27 @@ get_sha(){
 
 is_base (){
     local base_sha    # alpine
-    local image_sha   # nginx
-    base_repo=$1
-    image_repo=$2
-    base_sha=$(get_sha $1)
-    image_sha=$(get_sha $2)
+    local image_sha   # new image
+    local base_repo=$1
+    local image_repo=$2
 
-    found="true"
+    base_sha=$(get_sha $base_repo)
+    image_sha=$(get_sha $image_repo)
+
     for i in $base_sha; do
+        local found="false"
         for j in $image_sha; do
-            if [ "$i" = "$j" ]; then
-                #echo "no change, same base image: $i"
-                found="false"
+            if [[ $i = $j ]]; then
+                found="true"
                 break
             fi
         done
+        if [ $found == "false" ]; then
+            echo "false"
+            return 0
+        fi
     done
-    echo "$found"
+    echo "true"
 }
 
 image_version(){
@@ -54,12 +58,12 @@ image_version(){
 }
 
 compare (){
-    result1=$(is_base $1 $2)
-    result2=$(is_base $3 $4)
-    result3=$(is_base $5 $6)
-    version1=$(image_version $7)
-    version2=$(image_version $8)
-    if [ $result1 == "true" ] || [ $result2 == "true" ] || [ $result3 == "true" ] || [ "$version1" != "$version2" ];
+    result_arm=$(is_base $1 $2)
+    result_arm64=$(is_base $3 $4)
+    result_amd64=$(is_base $5 $6)
+    version1=$(get_service_version $7) #current on the docker hub (latest)
+    version2=$(get_service_version $8) #tag-amd64 newly built
+    if [ $result_arm == "false" ] || [ $result_amd64 == "false" ] || [ $result_arm64 == "false" ] || [ "$version1" != "$version2" ];     #compare alpine and service versions
     then
         echo "true"
     else
