@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 get_manifest_sha (){
     local repo=$1
     local arch=$2
