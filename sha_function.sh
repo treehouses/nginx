@@ -1,5 +1,4 @@
 #!/bin/bash
-#set -x
 get_manifest_sha (){
     local repo=$1
     local arch=$2
@@ -26,27 +25,6 @@ get_sha(){
     echo $sha
 }
 
-#is_base (){
-#set -x
-#    local base_sha    # alpine
-#    local image_sha   # nginx
-#    base_repo=$1
-#    image_repo=$2
-#    base_sha=$(get_sha $1)
-#    image_sha=$(get_sha $2)
-#
-#    found="true"
-#    for i in $base_sha; do
-#        for j in $image_sha; do
-#            if [ "$i" = "$j" ]; then
-#                #echo "no change, same base image: $i"
-#                found="false"
-#                break
-#            fi
-#        done
-#    done
-#    echo "$found"
-#}
 is_base (){
     local base_sha    # alpine
     local image_sha   # new image
@@ -79,19 +57,6 @@ image_version(){
     echo $version
 }
 
-#compare (){
-#    result1=$(is_base $1 $2)
-#    result2=$(is_base $3 $4)
-#    result3=$(is_base $5 $6)
-#    version1=$(image_version $7)
-#    version2=$(image_version $8)
-#    if [ $result1 == "true" ] || [ $result2 == "true" ] || [ $result3 == "true" ] || [ "$version1" != "$version2" ];
-#    then
-#        echo "true"
-#    else
-#        echo "false"
-#    fi
-#}
 compare (){
     result_arm=$(is_base $1 $2)
     result_arm64=$(is_base $3 $4)
@@ -105,6 +70,7 @@ compare (){
         echo "false"
     fi
 }
+
 create_manifest (){
     local repo=$1
     local tag1=$2
