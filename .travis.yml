@@ -31,12 +31,13 @@ script:
 - echo "treehouses version is $version2"
 - echo $DOCKERAPIKEY | docker login -u "sevenseas" --password-stdin
 - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes   # for arm64
-- "./docker-build.sh treehouses/alpine:latest arm"    #Dockerfile base image is arm arch
+- "./docker-build.sh treehouses/alpine:latest arm"      #Dockerfile base image is arm   arch
 - "./docker-build.sh treehouses/alpine:latest arm64"    #Dockerfile base image is arm64 arch
 - "./docker-build.sh treehouses/alpine:latest amd64"    #Dockerfile base image is amd64 arch
 - flag=$(compare "treehouses/alpine@"$alpine_arm_sha "treehouses/nginx@"$nginx_arm_sha "treehouses/alpine@"$alpine_amd64_sha "treehouses/nginx@"$nginx_amd64_sha "treehouses/alpine@"$alpine_arm64_sha "treehouses/nginx@"$nginx_arm64_sha "treehouses/nginx:latest" "treehouses/nginx-tags:amd64")
 - echo $flag
 before_deploy:
+- "./deploy.sh arm arm64 amd64"
 - timetag=$(date +%Y%m%d%H%M)
 - echo $timetag
 - tag1="latest"

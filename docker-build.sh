@@ -21,7 +21,7 @@ if [ -n "$sha" ]; then
         docker build -t $tag -f Dockerfile.$arch .
         version=$(docker run -it $tag /bin/sh -c "nginx -v" |awk '{print$3}')
         echo "$arch nginx version is $version"
-        docker push $tag
+        #docker push $tag
 fi
 
 #archs="rpi x86 arm64"
