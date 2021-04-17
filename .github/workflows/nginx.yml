@@ -53,8 +53,7 @@ jobs:
           flag=$(compare "treehouses/alpine@"$alpine_arm_sha "nginx@"$nginx_arm_sha "treehouses/alpine@"$alpine_amd64_sha "nginx@"$nginx_amd64_sha "treehouses/alpine@"$alpine_arm64_sha "nginx@"$nginx_arm64_sha "nginx" "nginx-tags:amd64")
           echo $flag
           docker images
-          docker push rjole/nginx-tags:arm
-          docker tag rjole/nginx-tags:arm rjole/nginx-tags:arm-1234
+          docker tag nginx-tags:arm rjole/nginx-tags:arm-1234
           #deploy_image "rjole/nginx" arm
           # deploy_image "$repo" amd64
           # deploy_image "$repo" arm64
