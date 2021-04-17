@@ -39,7 +39,7 @@ jobs:
           echo $alpine_amd64_sha
           nginx_arm64_sha=$(get_manifest_sha "arm64v8/nginx:latest" "arm64")
           echo $nginx_arm64_sha
-          flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "nginx@"$nginx_arm64_sha)
+          flag_arm64=$(is_base "arm64v8/alpine@"$alpine_arm64_sha "arm64v8/nginx@"$nginx_arm64_sha)
           echo "flag arm64"
           echo $flag_arm64
           version2=$(image_version nginx:latest)
