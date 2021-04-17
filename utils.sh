@@ -112,7 +112,7 @@ deploy_image(){
   local arch=$2  #arm arm64 amd64
   tag_arch=$repo-tags:$arch
   tag_time=$(date +%Y%m%d%H%M)
-  tag_arch_time=$repo-tags:$arch-$tag_time
+  tag_arch_time=$repo:$arch-$tag_time
   echo $tag_arch_time
   echo 1
   echo $tag_arch
