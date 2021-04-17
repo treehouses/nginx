@@ -19,28 +19,28 @@ jobs:
           export DOCKER_CLI_EXPERIMENTAL=enabled
           repo="rjole/nginx"
           source utils.sh
-          alpine_arm_sha=$(get_manifest_sha "alpine:latest" "arm")
+          alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
           echo "alpine arm"
           echo $alpine_arm_sha
-          nginx_arm_sha=$(get_manifest_sha "nginx:latest" "arm")
-          echo "treehouses/debian amd64"
+          nginx_arm_sha=$(get_manifest_sha "$repo:latest" "arm")
+          echo "nginx arm"
           echo $nginx_arm_sha
-          flag_arm=$(is_base "alpine@"$alpine_arm_sha "nginx@"$nginx_arm_sha)
+          flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "nginx@"$nginx_arm_sha)
           echo $flag_arm
-          alpine_amd64_sha=$(get_manifest_sha "alpine:latest" "amd64")
+          alpine_amd64_sha=$(get_manifest_sha "treehouses/alpine:latest" "amd64")
           echo $alpine_amd64_sha
-          nginx_amd64_sha=$(get_manifest_sha "nginx:latest" "amd64")
+          nginx_amd64_sha=$(get_manifest_sha "$repo:latest" "amd64")
           echo $nginx_amd64_sha
-          flag_amd64=$(is_base "alpine@"$alpine_amd64_sha "nginx@"$nginx_amd64_sha)
+          flag_amd64=$(is_base "treehouses/alpine@"$alpine_amd64_sha "$repo@"$nginx_amd64_sha)
           echo $flag_amd64
-          alpine_arm64_sha=$(get_manifest_sha "alpine:latest" "arm64")
+          alpine_arm64_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm64")
           echo $alpine_amd64_sha
-          nginx_arm64_sha=$(get_manifest_sha "nginx:latest" "arm64")
+          nginx_arm64_sha=$(get_manifest_sha "$repo:latest" "arm64")
           echo $nginx_arm64_sha
-          flag_arm64=$(is_base "alpine@"$alpine_arm64_sha "nginx@"$nginx_arm64_sha)
+          flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "$repo@"$nginx_arm64_sha)
           echo $flag_arm64
-          version2=$(image_version nginx:latest)
-          echo "nginx version is $version2"
+          version2=$(image_version $repo:latest)
+          echo "repo version is $version2"
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
           build_image "alpine:latest" arm "nginx"
           build_image "alpine:latest" amd64 "nginx"
