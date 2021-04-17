@@ -26,18 +26,21 @@ jobs:
           echo "nginx arm"
           echo $nginx_arm_sha
           flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "nginx@"$nginx_arm_sha)
+          echo "flag arm"
           echo $flag_arm
           alpine_amd64_sha=$(get_manifest_sha "treehouses/alpine:latest" "amd64")
           echo $alpine_amd64_sha
           nginx_amd64_sha=$(get_manifest_sha "nginx:latest" "amd64")
           echo $nginx_amd64_sha
           flag_amd64=$(is_base "treehouses/alpine@"$alpine_amd64_sha "nginx@"$nginx_amd64_sha)
+          echo "flag amd64"
           echo $flag_amd64
           alpine_arm64_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm64")
           echo $alpine_amd64_sha
           nginx_arm64_sha=$(get_manifest_sha "nginx:latest" "arm64")
           echo $nginx_arm64_sha
           flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "nginx@"$nginx_arm64_sha)
+          echo "flag arm64"
           echo $flag_arm64
           version2=$(image_version nginx:latest)
           echo "repo version is $version2"
