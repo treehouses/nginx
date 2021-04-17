@@ -49,7 +49,7 @@ jobs:
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
           build_image "treehouses/alpine:latest" arm "nginx"
           build_image "treehouses/alpine:latest" amd64 "nginx"
-         build_image "treehouses/alpine:latest" arm64 "nginx"
+          build_image "treehouses/alpine:latest" arm64 "nginx"
           # flag=$(compare_sha "treehouses/alpine@"$alpine_arm_sha "nginx@"$nginx_arm_sha "treehouses/alpine@"$alpine_amd64_sha "nginx@"$nginx_amd64_sha "treehouses/alpine@"$alpine_arm64_sha "nginx@"$nginx_arm64_sha "nginx" "nginx-tags:amd64")
           # echo $flag
           # deploy_image "$repo" arm
