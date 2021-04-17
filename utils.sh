@@ -108,7 +108,7 @@ build_image(){
 }
 
 deploy_image(){
-  local repo=$1
+  local repo="rjole/nginx"
   local arch=$2  #arm arm64 amd64
   tag_arch=$repo-tags:$arch
   tag_time=$(date +%Y%m%d%H%M)
