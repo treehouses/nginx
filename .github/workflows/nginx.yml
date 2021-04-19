@@ -17,7 +17,7 @@ jobs:
       - name: treehouses nginx
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          repo="nginx"
+          repo="rjpadilla/nginx"
           source utils.sh
           alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
           echo "alpine arm"
