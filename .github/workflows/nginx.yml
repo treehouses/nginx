@@ -17,7 +17,7 @@ jobs:
       - name: treehouses nginx
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          repo="rjole/nginx"
+          repo="nginx"
           source utils.sh
           alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
           echo "alpine arm"
@@ -53,8 +53,8 @@ jobs:
           flag=$(compare "treehouses/alpine@"$alpine_arm_sha "nginx@"$nginx_arm_sha "treehouses/alpine@"$alpine_amd64_sha "nginx@"$nginx_amd64_sha "treehouses/alpine@"$alpine_arm64_sha "nginx@"$nginx_arm64_sha "nginx" "nginx-tags:amd64")
           echo $flag
           docker images
-          docker tag nginx-tags:arm rjole/nginx-tags:arm-1234
-          #deploy_image "rjole/nginx" arm
+          #docker tag nginx-tags:arm rjole/nginx-tags:arm-1234
+          deploy_image "$repo" arm
           # deploy_image "$repo" amd64
           # deploy_image "$repo" arm64
           # tag=$(date +%Y%m%d%H%M)
