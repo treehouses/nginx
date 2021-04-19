@@ -52,15 +52,12 @@ jobs:
           build_image "treehouses/alpine:latest" arm64 "$repo"
           flag=$(compare "treehouses/alpine@"$alpine_arm_sha "nginx@"$nginx_arm_sha "treehouses/alpine@"$alpine_amd64_sha "nginx@"$nginx_amd64_sha "treehouses/alpine@"$alpine_arm64_sha "nginx@"$nginx_arm64_sha "nginx" "nginx-tags:amd64")
           echo $flag
-          docker images
-          #docker tag nginx-tags:arm rjole/nginx-tags:arm-1234
           deploy_image "$repo" arm
           deploy_image "$repo" amd64
           deploy_image "$repo" arm64
           tag=$(date +%Y%m%d%H%M)
           tag2="latest"
           echo $tag
-          docker images
           create_manifest $repo $tag $tag2 $repo-tags:amd64 $repo-tags:arm $repo-tags:arm64
           docker manifest inspect $repo:$tag
           docker manifest inspect $repo:$tag2
