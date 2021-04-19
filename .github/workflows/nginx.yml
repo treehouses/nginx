@@ -55,7 +55,7 @@ jobs:
           docker images
           #docker tag nginx-tags:arm rjole/nginx-tags:arm-1234
           deploy_image "$repo" arm
-          # deploy_image "$repo" amd64
+          deploy_image "$repo" amd64
           # deploy_image "$repo" arm64
           # tag=$(date +%Y%m%d%H%M)
           # tag2="latest"
