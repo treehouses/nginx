@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Echos out sha function from saved .txt file
 get_manifest_sha() {
   local repo=$1
   local arch=$2
@@ -17,6 +18,7 @@ get_manifest_sha() {
   done < "$2".txt
 }
 
+# Echos out sha function
 get_sha() {
   repo=$1
   docker pull $1 &>/dev/null
@@ -24,6 +26,7 @@ get_sha() {
   echo $sha
 }
 
+# Check if base is part of an image
 is_base() {
   local base_sha    # alpine
   local image_sha   # new image
