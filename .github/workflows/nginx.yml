@@ -57,9 +57,9 @@ jobs:
           deploy_image "$repo" arm
           deploy_image "$repo" amd64
           deploy_image "$repo" arm64
-          # tag=$(date +%Y%m%d%H%M)
-          # tag2="latest"
-          # echo $tag
+          tag=$(date +%Y%m%d%H%M)
+          tag2="latest"
+          echo $tag
           # docker manifest create $repo:$tag "nginx"$nginx_arm_sha "nginx"$nginx_arm64_sha  "nginx"$nginx_amd64_sha  
           # docker manifest create $repo:$latest "nginx"$nginx_arm_sha "nginx"$nginx_arm64_sha  "nginx"$nginx_amd64_sha  
           # docker manifest annotate $repo:$latest "nginx"$nginx_arm_sha --arch arm 
