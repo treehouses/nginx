@@ -61,7 +61,7 @@ jobs:
           tag2="latest"
           echo $tag
           docker images
-          docker manifest create $repo-tags:$tag "$repo-tags@"$nginx_arm_sha
+          docker manifest create $repo-tags:$tag "$repo-tags@"$nginx_arm64_sha
           # docker manifest create $repo-tags:$tag "$repo-tags@"$nginx_arm_sha "$repo-tags@"$nginx_arm64_sha  "$repo-tags@"$nginx_amd64_sha  
           # docker manifest create $repo-tags:$latest "nginx"$nginx_arm_sha "nginx"$nginx_arm64_sha  "nginx"$nginx_amd64_sha  
           # docker manifest annotate $repo-tags:$latest "nginx"$nginx_arm_sha --arch arm 
