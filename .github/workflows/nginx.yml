@@ -60,7 +60,7 @@ jobs:
           tag=$(date +%Y%m%d%H%M)
           tag2="latest"
           echo $tag
-          docker manifest create $repo-tags:$tag "$repo@"$nginx_arm_sha "$repo@"$nginx_arm64_sha  "$repo@"$nginx_amd64_sha  
+          docker manifest create $repo-tags:$tag "$repo-tags@"$nginx_arm_sha "$repo-tags@"$nginx_arm64_sha  "$repo-tags@"$nginx_amd64_sha  
           # docker manifest create $repo-tags:$latest "nginx"$nginx_arm_sha "nginx"$nginx_arm64_sha  "nginx"$nginx_amd64_sha  
           # docker manifest annotate $repo-tags:$latest "nginx"$nginx_arm_sha --arch arm 
           # docker manifest annotate $repo-tags:$tag "nginx"$nginx_arm_sha --arch arm 
