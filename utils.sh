@@ -108,20 +108,14 @@ build_image(){
 }
 
 deploy_image(){
-  local repo="rjole/nginx"
+  local repo=$1
   local arch=$2  #arm arm64 amd64
-  tag_arch=$repo:$arch
+  tag_arch=$repo-tags:$arch
   tag_time=$(date +%Y%m%d%H%M)
-  tag_arch_time=$repo:$arch-$tag_time
+  tag_arch_time=$repo-tags:$arch-$tag_time
   echo $tag_arch_time
-  echo 1
-  echo $tag_arch
   docker tag $tag_arch $tag_arch_time
-  echo 2
   docker push $tag_arch_time
-  echo 3
   docker tag $tag_arch_time $tag_arch
-  echo 4
   docker push $tag_arch
-  echo 5
 }
