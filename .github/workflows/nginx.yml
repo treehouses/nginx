@@ -2,13 +2,15 @@ name: nginx-docker-image-build
 
 on:
   push:
-  schedule:
-    - cron: '0 */8 * * *'
+    branches:
+      - master
+  workflow_dispatch:
+  repository_dispatch:
+    types: nginx
 
-jobs: 
-  nginx-docker-image-build:
-    runs-on: ubuntu-latest
-
+jobs:
+  nginx:
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -17,7 +19,7 @@ jobs:
       - name: treehouses nginx
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          repo="rjpadilla/nginx"
+          repo="treehouses/nginx"
           source .github/workflows/utils.sh
           alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
           echo "alpine arm"
