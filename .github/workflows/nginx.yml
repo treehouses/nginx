@@ -45,6 +45,9 @@ jobs:
           flag=$(compare_sha  "$alpine_x86_sha" "$variant_nginx_x86_sha" "$balena_rpi_sha" "$variant_rpi_sha" "$alpine_arm64_sha" "$variant_nginx_arm64_sha")
           echo $flag
           if [[ $flag == true ]]; then
+            deploy_image $repo arm
+            deploy_image $repo amd64
+            deploy_image $repo arm64
             echo "tags"
             tag="$(date +%Y%m%d%H%M)"
             echo $tag
