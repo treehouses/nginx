@@ -1,44 +1,44 @@
-name: build on change
+name:  build by force
 
 on:
-  push:
-    branches:
-      - master
-      - main
+  #push:
+  #  branches:
+  #    - master
+  #    - main
   workflow_dispatch:
-  repository_dispatch:
-    types: nginx
+  #repository_dispatch:
+  #  types: alpine
 
 jobs:
-  nginx:
+  alpine:
     runs-on: ubuntu-20.04
     steps:
       - name: checkout code
         uses: actions/checkout@v2
       - name: docker login
         run: docker login -u ${{ secrets.DOCKERUSERNAME }} -p ${{ secrets.DOCKERAPIKEY }}
-      - name: treehouses nginx
+      - name: treehouses alpine
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          repo="treehouses/nginx"
+          repo="treehouses/alpine"
           source .github/workflows/utils.sh
           echo "amd64"
           alpine_x86_sha=$(get_variant_sha "alpine" "latest" "amd64")
           echo $alpine_x86_sha
-          variant_alpine_x86_sha=$(get_manifest_sha "$repo:latest" "amd64")
-          echo $variant_alpine_x86_sha
+          #variant_alpine_x86_sha=$(get_manifest_sha "$repo:latest" "amd64")
+          #echo $variant_alpine_x86_sha
           echo "arm"
           balena_rpi_sha=$(get_tag_sha "balenalib/raspberry-pi-alpine" "latest")
           echo $balena_rpi_sha
-          variant_rpi_sha=$(get_manifest_sha "$repo:latest" "arm")
-          echo $variant_rpi_sha
+          #variant_rpi_sha=$(get_manifest_sha "$repo:latest" "arm")
+          #echo $variant_rpi_sha
           echo "arm64"
           alpine_arm64_sha=$(get_variant_sha "alpine" "latest" "arm64")
           echo $alpine_arm64_sha
-          variant_alpine_arm64_sha=$(get_manifest_sha "$repo:latest" "arm64")
-          echo $variant_alpine_arm64_sha
+          #variant_alpine_arm64_sha=$(get_manifest_sha "$repo:latest" "arm64")
+          #echo $variant_alpine_arm64_sha
           echo "change"
-          flag=$(compare_sha  "$alpine_x86_sha" "$variant_alpine_x86_sha" "$balena_rpi_sha" "$variant_rpi_sha" "$alpine_arm64_sha" "$variant_alpine_arm64_sha")
+          flag=true #$(compare_sha  "$alpine_x86_sha" "$variant_alpine_x86_sha" "$balena_rpi_sha" "$variant_rpi_sha" "$alpine_arm64_sha" "$variant_alpine_arm64_sha")
           echo $flag
           if [[ $flag == true ]]; then
             echo "tags"
