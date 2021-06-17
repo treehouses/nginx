@@ -17,10 +17,10 @@ jobs:
         uses: actions/checkout@v2
       - name: docker login
         run: docker login -u ${{ secrets.DOCKERUSERNAME }} -p ${{ secrets.DOCKERAPIKEY }}
-      - name: treehouses alpine
+      - name: nginx
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          repo="treehouses/alpine"
+          repo="neethumohan1212/nginx"
           source .github/workflows/utils.sh
           echo "amd64"
           alpine_x86_sha=$(get_variant_sha "alpine" "latest" "amd64")
