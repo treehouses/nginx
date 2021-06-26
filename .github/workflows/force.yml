@@ -21,6 +21,8 @@ jobs:
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
           repo="treehouses/nginx"
+          sudo npm install -g @treehouses/cli
+          export gitter_channel="${{ secrets.CHANNEL }}"
           source .github/workflows/utils.sh
           echo "amd64"
           alpine_x86=$(get_variant_sha "alpine" "latest" "amd64")
@@ -65,6 +67,8 @@ jobs:
             docker manifest annotate $repo:$tag2 $repo-tags:arm --arch arm
             docker manifest inspect $repo:$tag2
             docker manifest push $repo:$tag2
+            echo "https://hub.docker.com/r/treehouses/nginx/tags"
+            treehouses feedback "new treehouses/nginx check https://hub.docker.com/r/treehouses/nginx/tags"
           else
             echo "no changes"
           fi
