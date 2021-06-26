@@ -38,7 +38,7 @@ jobs:
           nginx_arm64=$(get_manifest_sha "$repo:latest" "arm64")
           echo $nginx_arm64
           echo "change"
-          flag=false #$(compare_sha "$alpine_x86" "$nginx_x86" "$alpine_arm" "$nginx_arm" "$alpine_arm64" "$nginx_arm64")
+          flag=$(compare_sha "$alpine_x86" "$nginx_x86" "$alpine_arm" "$nginx_arm" "$alpine_arm64" "$nginx_arm64")
           echo $flag
           if [[ $flag == true ]]; then
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
