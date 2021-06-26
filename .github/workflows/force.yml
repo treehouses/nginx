@@ -20,7 +20,7 @@ jobs:
       - name: treehouses nginx
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          repo="neethumohan1212/nginx"
+          repo="treehouses/nginx"
           source .github/workflows/utils.sh
           echo "amd64"
           alpine_x86=$(get_variant_sha "alpine" "latest" "amd64")
