@@ -73,7 +73,7 @@ build_image(){
   if [ -n "$sha" ]; then
     tag=$tag_repo-tags:$arch
     sed "s|{{base_image}}|$base_image|g" Dockerfile.template > Dockerfile.$arch
-    docker build -t $tag -f Dockerfile.$arch .
+    docker buildx build --platform linux/$arch -t $tag -f Dockerfile.$arch .
   fi
 }
 
