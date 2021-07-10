@@ -1,16 +1,16 @@
-name:  build by force
+name: build by force
 
 on:
-  #push:
-  #  branches:
-  #    - master
-  #    - main
+#   push:
+#     branches:
+#       - master
+#       - main
   workflow_dispatch:
-  #repository_dispatch:
-  #  types: alpine
+#   repository_dispatch:
+#     types: nginx
 
 jobs:
-  alpine:
+  nginx:
     runs-on: ubuntu-20.04
     steps:
       - name: checkout code
@@ -20,36 +20,37 @@ jobs:
       - name: treehouses nginx
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          repo="treehouses/nginx"
-          sudo npm install -g @treehouses/cli
-          export gitter_channel="${{ secrets.CHANNEL }}"
+          repo="dyeh123/nginx"
+          base="treehouses/alpine"
           source .github/workflows/utils.sh
           echo "amd64"
-          alpine_x86=$(get_variant_sha "alpine" "latest" "amd64")
-          echo $alpine_x86
-          # nginx_x86=$(get_manifest_sha "$repo:latest" "amd64")
-          # echo $nginx_x86
+          baseamd64=$(get_variant_sha "$base" "latest" "amd64")
+          echo $baseamd64
+          # repoamd64=$(get_manifest_sha "$repo:latest" "amd64")
+          # echo $repoamd64
           echo "arm"
-          alpine_arm=$(get_variant_sha "alpine" "latest" "arm")
-          echo $alpine_arm
-          # nginx_arm=$(get_manifest_sha "$repo:latest" "arm")
-          # echo $nginx_arm
+          basearm=$(get_tag_sha "$base" "latest")
+          echo $basearm
+          # repoarm=$(get_manifest_sha "$repo:latest" "arm")
+          # echo $repoarm
           echo "arm64"
-          alpine_arm64=$(get_variant_sha "alpine" "latest" "arm64")
-          echo $alpine_arm64
-          # nginx_arm64=$(get_manifest_sha "$repo:latest" "arm64")
-          # echo $nginx_arm64
+          basearm64=$(get_variant_sha "$base" "latest" "arm64")
+          echo $basearm64
+          # repoarm64=$(get_manifest_sha "$repo:latest" "arm64")
+          # echo $repoarm64
           echo "change"
-          flag=true #$(compare_sha "$alpine_x86" "$nginx_x86" "$alpine_arm" "$nginx_arm" "$alpine_arm64" "$nginx_arm64")
+          flag=true #$(compare_sha "$baseamd64" "$repoamd64" "$basearm" "$repoarm" "$basearm64" "$repoarm64")
           echo $flag
           if [[ $flag == true ]]; then
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-            build_image "treehouses/alpine:latest" amd64 $repo
-            build_image "treehouses/alpine:latest" arm $repo
-            build_image "treehouses/alpine:latest" arm64 $repo
+            build_image "$base:latest" amd64 $repo
+            build_image "$base:latest" arm $repo
+            build_image "$base:latest" arm64 $repo
             deploy_image $repo arm
             deploy_image $repo amd64
             deploy_image $repo arm64
+            sudo npm install -g @treehouses/cli
+            export gitter_channel="${{ secrets.CHANNEL }}"
             echo "tags"
             tag="$(date +%Y%m%d%H%M)"
             echo $tag
