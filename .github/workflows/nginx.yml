@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - main
-      - github-actions
   workflow_dispatch:
   repository_dispatch:
     types: nginx
@@ -21,7 +20,7 @@ jobs:
       - name: treehouses nginx
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          repo="dyeh123/nginx"
+          repo="treehouses/nginx"
           base="treehouses/alpine"
           source .github/workflows/utils.sh
           echo "amd64"
