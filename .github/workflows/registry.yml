@@ -32,7 +32,8 @@ jobs:
           basesha=$(docker image inspect $base | jq --raw-output '.[0].RootFS.Layers|.[]')
           reposha=$(docker image inspect $repo | jq --raw-output '.[0].RootFS.Layers|.[]')
           echo "base sha:$basesha repo sha:$reposha"
-          [[ $basesha != *$reposha* ]] && echo "::set-output name=flag::true" || echo "no changes" 
+          # [[ $basesha != *$reposha* ]] && echo "::set-output name=flag::true" || echo "no changes" 
+          [[ $basesha == *$reposha* ]] && echo "changes" || echo "no changes" 
   # images:
   #   needs: compare
   #   runs-on: ubuntu-latest
