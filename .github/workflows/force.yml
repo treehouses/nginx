@@ -25,7 +25,6 @@ jobs:
         id: set-flag
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          source .github/workflows/utils.sh
           version="3.12"
           repo="rjpadilla/nginx-tags:${{ matrix.arch }}"
           base="rjpadilla/alpine-tags:${{ matrix.arch }}"
