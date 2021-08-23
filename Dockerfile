@@ -7,8 +7,9 @@ RUN apk --no-cache update && apk add nginx \
 
 COPY default.conf /etc/nginx/conf.d
 
-RUN rm /etc/nginx/http.d/default.conf \
-    ln -sf /etc/nginx/http.d/default.conf /etc/nginx/conf.d \
+RUN sudo rm /etc/nginx/http.d/default.conf 
+
+RUN ln -sf /etc/nginx/http.d/default.conf /etc/nginx/conf.d \
     ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
