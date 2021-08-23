@@ -9,7 +9,7 @@ COPY default.conf /etc/nginx/conf.d
 
 RUN rm /etc/nginx/http.d/default.conf 
 
-RUN ln -sf /etc/nginx/http.d/default.conf /etc/nginx/conf.d \
+RUN ln -s /etc/nginx/conf.d /etc/nginx/http.d/default.conf  \
     ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
